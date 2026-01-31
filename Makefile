@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall
+CXXFLAGS = -O2 -Wall -std=c++23
 
 TARGET = ctodo
 
