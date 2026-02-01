@@ -1,16 +1,19 @@
-#include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
+#include <stdexcept>
 #include "file_utils.h"
 
-using std::cout, std::endl, std::string;
+using std::stringstream, std::endl, std::string;
 
 void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
     std::ifstream ifs(file_path);
     if (!ifs.is_open()) {
-        cout << "bad file?" << endl;
-        return;
+        stringstream err;
+        err << "Unable to open file " << file_path << endl;
+        throw std::runtime_error(err.str());
     }
+
     string line;
     bool found_tasks_header = false;
     while (std::getline(ifs, line)) {
@@ -32,6 +35,12 @@ void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
 
 void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
     std::ofstream ofs(file_path);
+    if (!ofs.is_open()) {
+        stringstream err;
+        err << "Unable to open file " << file_path << endl;
+        throw std::runtime_error(err.str());
+    }
+
     ofs << TASKS_HEADER << endl;
     for (Task t : tm.GetTasks()) {
         string done = t.GetIsCompleted() ? " x" : "";

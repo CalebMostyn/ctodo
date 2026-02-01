@@ -4,6 +4,8 @@
 #include <string>
 #include "task_manager.h"
 
+#define TASKS_HEADER "[TASKS]"
+
 class FileUtils {
 public:
     static void ParseTasksFile(string file_path, TaskManager &tm);
