@@ -15,7 +15,7 @@ TARGET = ctodo
 OUT_DIR = output
 BUILD_DIR = build
 
-.PHONY: objects object build clean all
+.PHONY: objects object build clean all client
 
 all: clean objects build
 
@@ -35,7 +35,10 @@ endif
 
 build: objects
 	mkdir -p $(OUT_DIR)
-	$(CXX) -o $(OUT_DIR)/$(TARGET) $(BUILD_DIR)/*.o
+	$(CXX) -o $(OUT_DIR)/$(TARGET)-server $(BUILD_DIR)/*.o
+
+client:
+	source venv/bin/activate; pyinstaller client/python/client.py -F --distpath $(OUT_DIR) -n $(TARGET)
 
 clean:
 	rm -rf $(OUT_DIR)

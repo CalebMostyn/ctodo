@@ -2,3 +2,5 @@ output/
 build/
 tasks.txt
 *venv/
+*.o
+*.spec
