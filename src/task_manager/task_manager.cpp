@@ -23,6 +23,23 @@ bool TaskManager::ValidTaskIdx(const uint& idx) {
     }
 }
 
+bool TaskManager::DeleteAllCompletedTasks() {
+    try {
+        vector<Task>::iterator it = m_tasks.begin();
+
+        while (it != m_tasks.end()) {
+            if (it->GetIsCompleted()) {
+                it = m_tasks.erase(it);
+            } else {
+                it++;
+            }
+        }
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
 vector<Task> TaskManager::GetTasks() const {
     return m_tasks;
 }
@@ -31,7 +48,14 @@ void TaskManager::AddTask(const Task &task) {
     m_tasks.push_back(task);
 }
 
-bool TaskManager::DeleteTask(const uint &idx) {
+bool TaskManager::DeleteTask(const uint &idx, const bool& all, const bool& done) {
+    if (all) {
+        m_tasks.clear();
+        return true;
+    }
+    if (done) {
+        return DeleteAllCompletedTasks();
+    }
     if (ValidTaskIdx(idx)) {
         m_tasks.erase(m_tasks.begin() + idx);
         return true;

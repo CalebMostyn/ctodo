@@ -39,17 +39,30 @@ void RequestManager::AddTask(const Request& req, Response& res) {
 }
 
 void RequestManager::DeleteTask(const Request& req, Response& res) {
-    uint task_idx;
+    uint task_idx = 0;
+    bool all_flag = false;
+    bool done_flag = false;
     try {
-        task_idx = std::stoi(req.get_param_value("task"));
+        string idx_param = req.get_param_value("task");
+        if (idx_param != "") {
+            if (idx_param == "*") {
+                all_flag = true;
+            } else if (idx_param == "done") {
+                done_flag = true;
+            } else {
+                task_idx = std::stoi(idx_param);
+            }
+        } else {
+            throw std::invalid_argument("No task specified.");
+        }
     } catch (...) {
         res.status = 400;
         res.set_content("Invalid Request.\n", "text/plain");
         return;
     }
 
-    if (m_task_manager->DeleteTask(task_idx)) {
-        res.set_content("Task Deleted Successfully.\n", "text/plain");
+    if (m_task_manager->DeleteTask(task_idx, all_flag, done_flag)) {
+        res.set_content("Task(s) Deleted Successfully.\n", "text/plain");
     } else {
         res.status = 404;
         res.set_content("Task Does Not Exist.\n", "text/plain");
