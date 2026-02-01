@@ -3,7 +3,7 @@ CXXFLAGS = -O2 -Wall -std=c++23 -pipe
 MAKEFLAGS += --no-print-directory
 
 SRC_DIR = src
-SRC_DIRS = task task_manager file_utils
+SRC_DIRS = task task_manager file_utils request_manager
 CXXFLAGS += $(addprefix -I../$(SRC_DIR)/,$(SRC_DIRS))
 
 LIBS_DIR = libs

@@ -3,6 +3,7 @@
 #include "httplib.h"
 
 #include "task_manager.h"
+#include "request_manager.h"
 
 using std::cout, std::cerr, std::endl, std::string, std::unique_ptr;
 using namespace httplib;
@@ -37,11 +38,14 @@ int main(int argv, char* argc[] ) {
         return 1;
     }
 
-    Server svr;
-    svr.Get("/tasks", [&tm](const Request&, Response& res) {
-      res.set_content(tm.TasksToString(), "text/plain");
-    });
+    // Setup RequestManager
+    RequestManager rm(tm);
 
+    // Setup Server
+    Server svr;
+    rm.SetupServer(svr);
+
+    // Signal catching
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
