@@ -3,6 +3,7 @@
 #include <string>
 #include "task_manager.h"
 #include "file_utils.h"
+#include "ansi.h"
 
 using std::string, std::stringstream, std::endl;
 
@@ -96,8 +97,13 @@ string TaskManager::TasksToString() const {
     result << "Tasks:" << endl;
     for (size_t ii = 0; ii < m_tasks.size(); ii++) {
         Task t = m_tasks[ii];
-        string done = t.GetIsCompleted() ? "done" : "not done";
-        result << ii << ". " << t.GetTitle() << " : " << done << endl;
+        bool is_done = t.GetIsCompleted();
+
+        string done = is_done ? ": X" : "";
+        if (is_done) result << ESC_GREEN_BG;
+        result << ii << ". " << t.GetTitle() << done;
+        if (is_done) result << ESC_RESET;
+        result << endl;
     }
     return result.str();
 }

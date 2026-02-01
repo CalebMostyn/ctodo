@@ -1,5 +1,6 @@
-#include "request_manager.h"
 #include <iostream>
+#include "request_manager.h"
+#include "ansi.h"
 
 RequestManager::RequestManager(shared_ptr<TaskManager> tm) {
     m_task_manager = tm;
@@ -30,7 +31,7 @@ void RequestManager::AddTask(const Request& req, Response& res) {
         task_title = req.get_param_value("title");
     } catch (...) {
         res.status = 400;
-        res.set_content("Invalid Request.\n", "text/plain");
+        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
         return;
     }
 
@@ -57,7 +58,7 @@ void RequestManager::DeleteTask(const Request& req, Response& res) {
         }
     } catch (...) {
         res.status = 400;
-        res.set_content("Invalid Request.\n", "text/plain");
+        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
         return;
     }
 
@@ -102,7 +103,7 @@ void RequestManager::UpdateTask(const Request& req, Response& res) {
         }
     } catch (...) {
         res.status = 400;
-        res.set_content("Invalid Request.\n", "text/plain");
+        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
         return;
     }
 
