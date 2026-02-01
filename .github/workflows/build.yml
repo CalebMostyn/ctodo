@@ -1,4 +1,4 @@
-name: Build with Docker
+name: Build
 
 on:
   push:
@@ -29,11 +29,11 @@ jobs:
       #   run: docker pull ghcr.io/calebmostyn/gbc-build:1.0
 
       - name: Build
-        uses: addnab/docker-run-action@v3
-        with:
+        # uses: addnab/docker-run-action@v3
+        # with:
           # image: ghcr.io/calebmostyn/gbc-build:1.0
-          options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
-          run: make clean all
+          # options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
+        run: make clean all
 
       - name: Zip Output
         # only on tags
