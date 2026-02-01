@@ -4,7 +4,8 @@
 
 #include "task_manager.h"
 
-using std::cout, std::endl, std::string, std::unique_ptr;
+using std::cout, std::cerr, std::endl, std::string, std::unique_ptr;
+using namespace httplib;
 
 #define ARGUMENTS "[TASKS_FILE]"
 
@@ -26,16 +27,19 @@ int main(int argv, char* argc[] ) {
         return 0;
     }
 
-    TaskManager tm(arg1);
-    vector<Task> tasks = tm.GetTasks();
-    for (Task t : tasks) {
-        string done = t.GetIsCompleted() ? "done" : "not done";
-        std::cout << "Task is : " << t.GetTitle() << " - " << done << std::endl;
+    // Setup TaskManager
+    TaskManager tm;
+    try {
+        tm = TaskManager(arg1);
+    } catch (const std::exception& e) {
+        // failed to initialize
+        cerr << e.what();
+        return 1;
     }
 
-    httplib::Server svr;
-    svr.Get("/hi", [](const httplib::Request &, httplib::Response &res) {
-      res.set_content("Hello World!", "text/plain");
+    Server svr;
+    svr.Get("/tasks", [&tm](const Request&, Response& res) {
+      res.set_content(tm.TasksToString(), "text/plain");
     });
 
     std::signal(SIGINT, signal_handler);
