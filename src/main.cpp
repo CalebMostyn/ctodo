@@ -10,6 +10,7 @@ using std::cout, std::cerr, std::endl, std::string, std::shared_ptr;
 using namespace httplib;
 
 #define ARGUMENTS "[TASKS_FILE]"
+#define DEFAULT_FILE "/var/lib/ctodo/tasks.txt"
 
 std::atomic<bool> stop_flag = false;
 void signal_handler(int signum) {
@@ -18,21 +19,24 @@ void signal_handler(int signum) {
 }
 
 int main(int argv, char* argc[] ) {
+    string tasks_file;
     if (argv == 1) {
-        cout << argc[0] << " : You must provide at least 1 argument!" << endl;
-        return 1;
+        tasks_file = DEFAULT_FILE;
+    } else {
+        if ((string)argc[1] == "-h") {
+            if (argv == 2) {
+                cout << argc[0] << " : " << ARGUMENTS << endl;
+            }
+            return 0;
+        }
+        tasks_file = (string)argc[1];
     }
 
-    string arg1 = argc[1];
-    if (arg1 == "-h") {
-        cout << argc[0] << " : " << ARGUMENTS << endl;
-        return 0;
-    }
 
     // Setup TaskManager
     shared_ptr<TaskManager> tm;
     try {
-        tm = std::make_shared<TaskManager>(arg1);
+        tm = std::make_shared<TaskManager>(tasks_file);
     } catch (const std::exception& e) {
         // failed to initialize
         cerr << e.what();
