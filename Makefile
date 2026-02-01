@@ -7,7 +7,7 @@ SRC_DIRS = task task_manager file_utils
 CXXFLAGS += $(addprefix -I../$(SRC_DIR)/,$(SRC_DIRS))
 
 LIBS_DIR = libs
-LIBS_DIRS = cpp-htpplib
+LIBS_DIRS = cpp-httplib
 CXXFLAGS += $(addprefix -I../$(LIBS_DIR)/,$(LIBS_DIRS))
 
 TARGET = ctodo
