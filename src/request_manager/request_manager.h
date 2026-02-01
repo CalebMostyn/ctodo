@@ -20,6 +20,7 @@ public:
     void GetTasks(const Request& req, Response& res);
     void AddTask(const Request& req, Response& res);
     void DeleteTask(const Request& req, Response& res);
+    void UpdateTask(const Request& req, Response& res);
 };
 
 #endif //_REQUEST_MANAGER__H_

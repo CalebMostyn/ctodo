@@ -7,14 +7,20 @@
 using std::string, std::stringstream, std::endl;
 
 TaskManager::TaskManager(string file_path) {
-    std::cout << "making task manager with file" << std::endl;
     m_file_path = file_path;
     FileUtils::ParseTasksFile(m_file_path, *this);
 }
 
 TaskManager::~TaskManager() {
-    std::cout << "destructing" << endl;
     FileUtils::WriteTasksFile(m_file_path, *this);
+}
+
+bool TaskManager::ValidTaskIdx(const uint& idx) {
+    if (idx < m_tasks.size()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 vector<Task> TaskManager::GetTasks() const {
@@ -26,12 +32,39 @@ void TaskManager::AddTask(const Task &task) {
 }
 
 bool TaskManager::DeleteTask(const uint &idx) {
-    if (idx < m_tasks.size()) {
+    if (ValidTaskIdx(idx)) {
         m_tasks.erase(m_tasks.begin() + idx);
         return true;
-    } else {
-        return false;
+    } 
+
+    return false;
+}
+bool TaskManager::UpdateTask(const uint& idx, const string& title, const bool& status) {
+    if (ValidTaskIdx(idx)) {
+        Task* t = &m_tasks[idx];
+        t->SetTitle(title);
+        t->SetIsCompleted(status);
+        return true;
     }
+    return false;
+}
+
+bool TaskManager::UpdateTask(const uint& idx, const bool& status) {
+    if (ValidTaskIdx(idx)) {
+        Task* t = &m_tasks[idx];
+        t->SetIsCompleted(status);
+        return true;
+    }
+    return false;
+}
+
+bool TaskManager::UpdateTask(const uint& idx, const string& title) {
+    if (ValidTaskIdx(idx)) {
+        Task* t = &m_tasks[idx];
+        t->SetTitle(title);
+        return true;
+    }
+    return false;
 }
 
 string TaskManager::TasksToString() const {
