@@ -94,15 +94,15 @@ bool TaskManager::UpdateTask(const uint& idx, const string& title) {
 
 string TaskManager::TasksToString() const {
     stringstream result;
-    result << "Tasks:" << endl;
+    result << ESC_UNDERLINE << "Tasks:" << ESC_RESET << endl;
     for (size_t ii = 0; ii < m_tasks.size(); ii++) {
         Task t = m_tasks[ii];
         bool is_done = t.GetIsCompleted();
 
-        string done = is_done ? ": X" : "";
-        if (is_done) result << ESC_GREEN_BG;
+        string done = is_done ? " : X" : "";
+        if (!is_done) result << ESC_BOLD;
         result << ii << ". " << t.GetTitle() << done;
-        if (is_done) result << ESC_RESET;
+        if (!is_done) result << ESC_RESET;
         result << endl;
     }
     return result.str();
