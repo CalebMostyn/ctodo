@@ -1,11 +1,12 @@
 #include <iostream>
 #include <string>
+#include <memory>
 #include "httplib.h"
 
 #include "task_manager.h"
 #include "request_manager.h"
 
-using std::cout, std::cerr, std::endl, std::string, std::unique_ptr;
+using std::cout, std::cerr, std::endl, std::string, std::shared_ptr;
 using namespace httplib;
 
 #define ARGUMENTS "[TASKS_FILE]"
@@ -29,9 +30,9 @@ int main(int argv, char* argc[] ) {
     }
 
     // Setup TaskManager
-    TaskManager tm;
+    shared_ptr<TaskManager> tm;
     try {
-        tm = TaskManager(arg1);
+        tm = std::make_shared<TaskManager>(arg1);
     } catch (const std::exception& e) {
         // failed to initialize
         cerr << e.what();

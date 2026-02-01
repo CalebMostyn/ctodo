@@ -12,12 +12,13 @@ private:
     vector<Task> m_tasks;
     string m_file_path;
 public:
-    TaskManager();
     TaskManager(string file_path);
     ~TaskManager();
 
     vector<Task> GetTasks() const;
     void AddTask(const Task &task);
+    bool DeleteTask(const uint &idx);
+
     string TasksToString() const;
 };
 
