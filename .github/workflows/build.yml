@@ -1,4 +1,4 @@
-name: Build
+name: Build with Docker
 
 on:
   push:
@@ -18,22 +18,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Log in to GitHub Container Registry
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.CONTAINER_TOKEN }}
-      #
-      # - name: Pull Docker image
-      #   run: docker pull ghcr.io/calebmostyn/gbc-build:1.0
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CONTAINER_TOKEN }}
+
+      - name: Pull Docker image
+        run: docker pull ghcr.io/calebmostyn/gbc-build:1.0
 
       - name: Build
-        # uses: addnab/docker-run-action@v3
-        # with:
-          # image: ghcr.io/calebmostyn/gbc-build:1.0
-          # options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
-        run: make clean all
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ghcr.io/calebmostyn/ctodo-build:1.0
+          options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
+          run: ./build.sh
 
       - name: Zip Output
         # only on tags
