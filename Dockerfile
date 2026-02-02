@@ -4,12 +4,7 @@ FROM ubuntu:24.04
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     build-essential \
     python3 \
-    python3-pip \
-    python3-venv
+    python3-pip
     
-# Setup venv for Python build
-RUN mkdir workspace/ && cd workspace/ && \
-    python3 -m venv venv && \
-    . venv/bin/activate && \
-    pip3 install requests && \
-    pip3 install pyinstaller
+# Install Python requirements
+RUN pip3 install requests pyinstaller --break-system-packages
