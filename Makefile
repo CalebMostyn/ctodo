@@ -32,7 +32,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 all: $(OUT_DIR)/$(TARGET)-server client
 
 client:
-	source venv/bin/activate; pyinstaller client/python/client.py -F --distpath $(OUT_DIR) -n $(TARGET)
+	. venv/bin/activate; pyinstaller client/python/client.py -F --distpath $(OUT_DIR) -n $(TARGET)
 
 clean:
 	rm -rf $(OUT_DIR)
