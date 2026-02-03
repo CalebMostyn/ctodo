@@ -1,5 +1,6 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto -static
+CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto -static \
+	-static-libstdc++ -static-libgcc -no-pie
 MAKEFLAGS += --no-print-directory -j$(nproc)
 
 SRC_DIR = src
