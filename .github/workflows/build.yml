@@ -37,7 +37,7 @@ jobs:
           options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
           run: |
             make clean all
-            chmod 755 output/
+            chmod -R 755 output/
 
       - name: Zip Output
         # only on tags
