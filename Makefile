@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto
+CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto -static
 MAKEFLAGS += --no-print-directory -j$(nproc)
 
 SRC_DIR = src
@@ -34,6 +34,7 @@ all: $(OUT_DIR)/$(TARGET)-server client
 # must be ran from within virtual env or with requirements installed globally
 client:
 	pyinstaller client/python/client.py -F --distpath $(OUT_DIR) -n $(TARGET)
+	staticx $(OUT_DIR)/$(TARGET) $(OUT_DIR)/$(TARGET)
 
 clean:
 	rm -rf $(OUT_DIR)
