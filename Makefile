@@ -22,7 +22,7 @@ DEPS := $(OBJS:.o=.d)
 .PHONY: all client clean
 
 $(OUT_DIR)/$(TARGET)-server: $(OBJS)
-	@mkdir -p $(OUT_DIR)
+	@mkdir -p $(OUT_DIR) && chmod +r $(OUT_DIR)
 	$(CXX) $^ -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
