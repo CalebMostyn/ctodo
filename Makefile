@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto -static
+CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto
 LDFLAGS = -static-libstdc++ -static-libgcc -no-pie
 MAKEFLAGS += --no-print-directory -j$(nproc)
 
@@ -24,7 +24,7 @@ DEPS := $(OBJS:.o=.d)
 
 $(OUT_DIR)/$(TARGET)-server: $(OBJS)
 	@mkdir -p $(OUT_DIR)
-	$(CXX) $^ $(LD_FLAGS) -o $@
+	$(CXX) $^ $(LDFLAGS) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
