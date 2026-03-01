@@ -17,7 +17,15 @@ void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
         // Create file if does not exist
         WriteTasksFile(file_path, tm);
     }
-    json data = json::parse(ifs);
+
+    json data;
+    try {
+        data = json::parse(ifs);
+    } catch (...) {
+        stringstream err;
+        err << "Unable to parse file " << file_path << endl;
+        throw std::runtime_error(err.str());
+    }
 
     for (auto task : data["tasks"]) {
         Task* t = new Task(task["title"]);
@@ -42,7 +50,6 @@ void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
         err << "Unable to open file " << file_path << endl;
         throw std::runtime_error(err.str());
     }
-
 
     ofs << tm.TasksToJson().dump(4) << endl;
 
