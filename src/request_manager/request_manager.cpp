@@ -37,7 +37,7 @@ void RequestManager::AddTask(const Request& req, Response& res) {
     }
 
     m_task_manager->AddTask(task_title);
-    json response = {"message", "Task Added Successfully."};
+    json response = {{"message", "Task Added Successfully."}};
     res.set_content(response.dump(), "application/json");
 }
 
@@ -65,11 +65,11 @@ void RequestManager::DeleteTask(const Request& req, Response& res) {
     }
 
     if (m_task_manager->DeleteTask(task_idx, all_flag, done_flag)) {
-        json response = {"message", "Task(s) Deleted Successfully."};
+        json response = {{"message", "Task(s) Deleted Successfully."}};
         res.set_content(response.dump(), "application/json");
     } else {
         res.status = 404;
-        json response = {"message", "Task Does Not Exist."};
+        json response = {{"message", "Task Does Not Exist."}};
         res.set_content(response.dump(), "application/json");
     }
 }
@@ -121,11 +121,11 @@ void RequestManager::UpdateTask(const Request& req, Response& res) {
     }
 
     if (success) {
-        json response = {"message", "Task Updated Successfully."};
+        json response = {{"message", "Task Updated Successfully."}};
         res.set_content(response.dump(), "application/json");
     } else {
         res.status = 404;
-        json response = {"message", "Task Does Not Exist."};
+        json response = {{"message", "Task Does Not Exist."}};
         res.set_content(response.dump(), "application/json");
     }
 }

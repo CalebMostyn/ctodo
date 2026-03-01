@@ -11,7 +11,7 @@ using std::vector, std::string, std::shared_ptr;
 using json = nlohmann::json;
 using namespace httplib;
 
-const json INVALID_REQUEST_RESPONSE = {"message", "Invalid Request."};
+const json INVALID_REQUEST_RESPONSE = {{"message", "Invalid Request."}};
 
 class RequestManager {
 private: 
