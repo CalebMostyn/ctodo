@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <string>
+#include "json.hpp"
 #include "task.h"
 
 using std::vector, std::string;
+using json = nlohmann::json;
 
 class TaskManager {
 private:
@@ -24,7 +26,7 @@ public:
     bool UpdateTask(const uint& idx, const bool& status);
     bool UpdateTask(const uint& idx, const string& title);
 
-    string TasksToString() const;
+    json TasksToJson() const;
 };
 
 #endif //_TASK_MANAGER__H_

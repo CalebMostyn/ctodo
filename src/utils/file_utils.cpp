@@ -43,16 +43,8 @@ void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
         throw std::runtime_error(err.str());
     }
 
-    json data = json::object();
-    data["tasks"] = json::array();
 
-    for (Task t : tm.GetTasks()) {
-        json task = json::object();
-        task["title"] = t.GetTitle();
-        task["complete"] = t.GetIsCompleted();
-        data["tasks"].push_back(task);
-    }
-    ofs << data.dump(4) << endl;
+    ofs << tm.TasksToJson().dump(4) << endl;
 
 }
 
