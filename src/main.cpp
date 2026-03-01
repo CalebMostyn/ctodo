@@ -16,7 +16,7 @@ const map<string, string> ARGUMENTS_HELP = {{"-f", "Tasks file to use. Created i
                                         {"-p", "Port to bind server to. Defaults to 8080."}};
 
 #define ALL_ARGUMENTS_HELP "[-f TASKS_FILE] [-i INTERFACE_ADDR] [-p PORT]"
-#define DEFAULT_FILE "/var/lib/ctodo/tasks.txt"
+#define DEFAULT_FILE "/var/lib/ctodo/tasks.json"
 #define DEFAULT_INTERFACE "0.0.0.0"
 #define DEFAULT_PORT 8080
 
