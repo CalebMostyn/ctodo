@@ -2,6 +2,7 @@
 #include "request_manager.h"
 #include "ansi.h"
 
+
 RequestManager::RequestManager(shared_ptr<TaskManager> tm) {
     m_task_manager = tm;
 }
@@ -22,7 +23,7 @@ void RequestManager::SetupServer(Server& svr) {
 }
 
 void RequestManager::GetTasks(const Request& req, Response& res) {
-    res.set_content(m_task_manager->TasksToString(), "text/plain");
+    res.set_content(m_task_manager->TasksToJson().dump(), "application/json");
 }
 
 void RequestManager::AddTask(const Request& req, Response& res) {
@@ -31,12 +32,13 @@ void RequestManager::AddTask(const Request& req, Response& res) {
         task_title = req.get_param_value("title");
     } catch (...) {
         res.status = 400;
-        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
+        res.set_content(INVALID_REQUEST_RESPONSE.dump(), "application/json");
         return;
     }
 
     m_task_manager->AddTask(task_title);
-    res.set_content("Task Added Successfully.\n", "text/plain");
+    json response = {{"message", "Task Added Successfully."}};
+    res.set_content(response.dump(), "application/json");
 }
 
 void RequestManager::DeleteTask(const Request& req, Response& res) {
@@ -58,15 +60,17 @@ void RequestManager::DeleteTask(const Request& req, Response& res) {
         }
     } catch (...) {
         res.status = 400;
-        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
+        res.set_content(INVALID_REQUEST_RESPONSE.dump(), "application/json");
         return;
     }
 
     if (m_task_manager->DeleteTask(task_idx, all_flag, done_flag)) {
-        res.set_content("Task(s) Deleted Successfully.\n", "text/plain");
+        json response = {{"message", "Task(s) Deleted Successfully."}};
+        res.set_content(response.dump(), "application/json");
     } else {
         res.status = 404;
-        res.set_content("Task Does Not Exist.\n", "text/plain");
+        json response = {{"message", "Task Does Not Exist."}};
+        res.set_content(response.dump(), "application/json");
     }
 }
 
@@ -103,7 +107,7 @@ void RequestManager::UpdateTask(const Request& req, Response& res) {
         }
     } catch (...) {
         res.status = 400;
-        res.set_content(ESC_RED_BG + "Invalid Request.\n"s + ESC_RESET, "text/plain");
+        res.set_content(INVALID_REQUEST_RESPONSE.dump(), "application/json");
         return;
     }
 
@@ -117,9 +121,11 @@ void RequestManager::UpdateTask(const Request& req, Response& res) {
     }
 
     if (success) {
-        res.set_content("Task Updated Successfully.\n", "text/plain");
+        json response = {{"message", "Task Updated Successfully."}};
+        res.set_content(response.dump(), "application/json");
     } else {
         res.status = 404;
-        res.set_content("Task Does Not Exist.\n", "text/plain");
+        json response = {{"message", "Task Does Not Exist."}};
+        res.set_content(response.dump(), "application/json");
     }
 }

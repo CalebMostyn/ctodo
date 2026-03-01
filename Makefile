@@ -8,7 +8,7 @@ SRC_DIRS = . task task_manager request_manager utils
 CXXFLAGS += $(addprefix -I$(SRC_DIR)/,$(SRC_DIRS))
 
 LIBS_DIR = libs
-LIBS_DIRS = cpp-httplib
+LIBS_DIRS = cpp-httplib nlohmann
 CXXFLAGS += $(addprefix -I$(LIBS_DIR)/,$(LIBS_DIRS))
 
 TARGET = ctodo

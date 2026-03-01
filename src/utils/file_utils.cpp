@@ -3,33 +3,26 @@
 #include <filesystem>
 #include <string>
 #include <stdexcept>
+#include <iostream>
+#include "json.hpp"
 #include "file_utils.h"
 
-using std::stringstream, std::endl, std::string;
+using std::stringstream, std::endl, std::string, std::cout;
+using json = nlohmann::json;
 
 void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
+    
     std::ifstream ifs(file_path);
     if (!ifs.is_open()) {
         // Create file if does not exist
         WriteTasksFile(file_path, tm);
     }
+    json data = json::parse(ifs);
 
-    string line;
-    bool found_tasks_header = false;
-    while (std::getline(ifs, line)) {
-        if (line == TASKS_HEADER) {
-            found_tasks_header = true;
-            continue;
-        }
-        if (found_tasks_header) {
-            Task* t = new Task(line);
-            if (line.substr(line.length() - 2) == " X" || line.substr(line.length() - 2) == " x") {
-                t->SetIsCompleted(true);
-                string substr = line.substr(0, line.find_last_of(' '));
-                t->SetTitle(substr);
-            }
-            tm.AddTask(*t);
-        }
+    for (auto task : data["tasks"]) {
+        Task* t = new Task(task["title"]);
+        t->SetIsCompleted(task["complete"]);
+        tm.AddTask(*t);
     }
 }
 
@@ -50,10 +43,8 @@ void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
         throw std::runtime_error(err.str());
     }
 
-    ofs << TASKS_HEADER << endl;
-    for (Task t : tm.GetTasks()) {
-        string done = t.GetIsCompleted() ? " x" : "";
-        ofs << t.GetTitle() << done << endl;
-    }
+
+    ofs << tm.TasksToJson().dump(4) << endl;
+
 }
 

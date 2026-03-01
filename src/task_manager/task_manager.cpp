@@ -6,6 +6,7 @@
 #include "ansi.h"
 
 using std::string, std::stringstream, std::endl;
+using json = nlohmann::json;
 
 TaskManager::TaskManager(string file_path) {
     m_file_path = file_path;
@@ -92,18 +93,14 @@ bool TaskManager::UpdateTask(const uint& idx, const string& title) {
     return false;
 }
 
-string TaskManager::TasksToString() const {
-    stringstream result;
-    result << ESC_UNDERLINE << "Tasks:" << ESC_RESET << endl;
-    for (size_t ii = 0; ii < m_tasks.size(); ii++) {
-        Task t = m_tasks[ii];
-        bool is_done = t.GetIsCompleted();
-
-        string done = is_done ? " : X" : "";
-        if (!is_done) result << ESC_BOLD;
-        result << ii << ". " << t.GetTitle() << done;
-        if (!is_done) result << ESC_RESET;
-        result << endl;
+json TaskManager::TasksToJson() const {
+    json data = json::object();
+    data["tasks"] = json::array();
+    for (Task t : m_tasks) {
+        json task = json::object();
+        task["title"] = t.GetTitle();
+        task["complete"] = t.GetIsCompleted();
+        data["tasks"].push_back(task);
     }
-    return result.str();
+    return data;
 }
