@@ -2,5 +2,6 @@ output/
 build/
 tasks.txt
 *venv/
+*__pycache__/
 *.o
 *.spec

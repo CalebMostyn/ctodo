@@ -1,6 +1,5 @@
-import sys
-import requests
 import argparse
+from requests_utils import *
 
 DEFAULT_URL = 'http://localhost'
 DEFAULT_PORT = 8080
@@ -37,68 +36,8 @@ args = parser.parse_args()
 url = args.url
 port = args.port
 
-def __get_request(url, data=None):
-    try:
-        response = requests.get(url, data=data)
-    except requests.exceptions.ConnectionError:
-        print('Failed to connect to server.')
-        sys.exit(1)
-    except requests.exceptions.RequestException as e:
-        print(f'Error {e}')
-        sys.exit(1)
-
-    if response.status_code >= 400:
-        print(response.json()['message'])
-        sys.exit(1)
-    return response.json()
-
-def __post_request(url, data=None):
-    try:
-        response = requests.post(url, data=data)
-    except requests.exceptions.ConnectionError:
-        print('Failed to connect to server.')
-        sys.exit(1)
-    except requests.exceptions.RequestException as e:
-        print(f'Error {e}')
-        sys.exit(1)
-
-    if response.status_code >= 400:
-        print(response.json()['message'])
-        sys.exit(1)
-    return response.json()
-
-def __patch_request(url, data=None):
-    try:
-        response = requests.patch(url, data=data)
-    except requests.exceptions.ConnectionError:
-        print('Failed to connect to server.')
-        sys.exit(1)
-    except requests.exceptions.RequestException as e:
-        print(f'Error {e}')
-        sys.exit(1)
-
-    if response.status_code >= 400:
-        print(response.json()['message'])
-        sys.exit(1)
-    return response.json()
-
-def __delete_request(url, data=None):
-    try:
-        response = requests.delete(url, data=data)
-    except requests.exceptions.ConnectionError:
-        print('Failed to connect to server.')
-        sys.exit(1)
-    except requests.exceptions.RequestException as e:
-        print(f'Error {e}')
-        sys.exit(1)
-
-    if response.status_code >= 400:
-        print(response.json()['message'])
-        sys.exit(1)
-    return response.json()
-
 if args.command == 'ls':
-    response = __get_request(f'{url}:{port}/tasks')
+    response = get_request(f'{url}:{port}/tasks')
     print('Tasks:')
     index = 0
     for task in response['tasks']:
@@ -106,30 +45,30 @@ if args.command == 'ls':
         index += 1
 elif args.command == 'add':
     data = {'title': " ".join(args.title)}
-    response = __post_request(f'{url}:{port}/tasks', data=data)
+    response = post_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 elif args.command == 'delete':
     data = {'task': args.task}
-    response = __delete_request(f'{url}:{port}/tasks', data=data)
+    response = delete_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 elif args.command == 'done':
     data = {'task': args.task, 'done': True}
-    response = __patch_request(f'{url}:{port}/tasks', data=data)
+    response = patch_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 elif args.command == 'undo':
     data = {'task': args.task, 'done': False}
-    response = __patch_request(f'{url}:{port}/tasks', data=data)
+    response = patch_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 elif args.command == 'rename':
     data = {'task': args.task, 'title': " ".join(args.title)}
-    response = __patch_request(f'{url}:{port}/tasks', data=data)
+    response = patch_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 elif args.command == 'clear':
     tasks = args.tasks
     if args.tasks == "all":
         tasks = "*"
     data = {'task': tasks}
-    response = __delete_request(f'{url}:{port}/tasks', data=data)
+    response = delete_request(f'{url}:{port}/tasks', data=data)
     print(response['message'])
 else:
     parser.print_help()
