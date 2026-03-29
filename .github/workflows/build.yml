@@ -51,13 +51,15 @@ jobs:
       - name: Extract CHANGELOG Entries
         if: startsWith(github.ref, 'refs/tags/')
         id: changelog
-        run: |
-          VERSION="${GITHUB_REF_NAME}"
-          python scripts/get_changelog.py CHANGELOG.md $VERSION $ > release_notes.txt
+        with:
+          image: ghcr.io/calebmostyn/ctodo-build:1.1
+          run: |
+            VERSION="${GITHUB_REF_NAME}"
+            python scripts/get_changelog.py CHANGELOG.md $VERSION $ > release_notes.txt
       
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          cat release_notes.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+            echo "notes<<EOF" >> $GITHUB_OUTPUT
+            cat release_notes.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
