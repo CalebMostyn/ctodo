@@ -54,7 +54,12 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: ghcr.io/calebmostyn/ctodo-build:1.1
-          options: --rm -v ${{ github.workspace }}:/workspace -w /workspace -e GITHUB_OUTPUT=${GITHUB_OUTPUT}
+          options: >
+            --rm
+            -v ${{ github.workspace }}:/workspace
+            -w /workspace
+            -e GITHUB_OUTPUT=${GITHUB_OUTPUT}
+            -e GITHUB_REF=${GITHUB_REF}
           run: |
             VERSION="${GITHUB_REF#refs/tags/}"
             python3 scripts/get_changelog.py CHANGELOG.md $VERSION > release_notes.txt
