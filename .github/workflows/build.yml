@@ -57,7 +57,7 @@ jobs:
           options: --rm -v ${{ github.workspace }}:/workspace -w /workspace
           run: |
             VERSION="${GITHUB_REF_NAME}"
-            python scripts/get_changelog.py CHANGELOG.md $VERSION $ > release_notes.txt
+            python3 scripts/get_changelog.py CHANGELOG.md $VERSION > release_notes.txt
       
             echo "notes<<EOF" >> $GITHUB_OUTPUT
             cat release_notes.txt >> $GITHUB_OUTPUT
