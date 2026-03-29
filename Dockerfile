@@ -9,4 +9,4 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     patchelf
     
 # Install Python requirements
-RUN pip3 install requests pyinstaller staticx --break-system-packages
+RUN pip3 install requests pyinstaller staticx markdown_extract --break-system-packages

@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.CONTAINER_TOKEN }}
 
       - name: Pull Docker image
-        run: docker pull ghcr.io/calebmostyn/ctodo-build:1.0
+        run: docker pull ghcr.io/calebmostyn/ctodo-build:1.1
 
       - name: Build
         uses: addnab/docker-run-action@v3
@@ -48,6 +48,16 @@ jobs:
           zip -r "$ZIP_NAME" output/
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
+      - name: Extract CHANGELOG Entries
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          python scripts/get_changelog.py CHANGELOG.md $VERSION $ > release_notes.txt
+      
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          cat release_notes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         id: create_release
@@ -55,6 +65,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           release_name: ctodo Release ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.notes }}
           draft: false
           prerelease: false
         env:

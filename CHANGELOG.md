@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Added CHANGELOG and Automated Release Notes on CI
+- Removed Fully Static Build
 - Minor Python Client Cleanup
 - Add URL and Port Arguments to Python Client
 - Reworked Request Content Types to JSON
