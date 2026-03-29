@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+## [v1.0.1] - 03.28.2026
 - Added CHANGELOG and Automated Release Notes on CI
 - Removed Fully Static Build
 - Minor Python Client Cleanup
