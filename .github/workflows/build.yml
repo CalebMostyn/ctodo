@@ -57,16 +57,16 @@ jobs:
           options: >
             --rm
             -v ${{ github.workspace }}:/workspace
+            -v ${{ github.output }}:/github/output
             -w /workspace
-            -e GITHUB_OUTPUT=${GITHUB_OUTPUT}
             -e GITHUB_REF=${GITHUB_REF}
           run: |
             VERSION="${GITHUB_REF#refs/tags/}"
             python3 scripts/get_changelog.py CHANGELOG.md $VERSION > release_notes.txt
       
-            echo "notes<<EOF" >> $GITHUB_OUTPUT
-            cat release_notes.txt >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            echo "notes<<EOF" >> /github/output
+            cat release_notes.txt >> /github/output
+            echo "EOF" >> /github/output
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
