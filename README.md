@@ -2,7 +2,7 @@
 todo App Built With HTTP Server and Client
 
 # Architecture
-Simple C++ backend HTTP server, built using [cpp-httplib](https://github.com/yhirose/cpp-httplib/tree/master), able to be interfaced with a variety of clients. Currently implemented clients include a Python TUI.
+Simple C++ backend HTTP server, built using [cpp-httplib](https://github.com/yhirose/cpp-httplib/tree/master), able to be interfaced with a variety of clients. Currently implemented clients include a Python CLI.
 
 Operates on a single file, with a list of tasks that are either completed or uncompleted. Future feature may include the server managing multiple files to have seperate, concurrent lists.
 
