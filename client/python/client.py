@@ -2,12 +2,14 @@ import sys
 import requests
 import argparse
 
-# TODO: parse in as args
-url = 'http://localhost'
-port = 8080
+DEFAULT_URL = 'http://localhost'
+DEFAULT_PORT = 8080
 
 # Parsing Args
 parser = argparse.ArgumentParser(prog='ctodo')
+parser.add_argument('-u', '--url', help='Server URL.', default=DEFAULT_URL)
+parser.add_argument('-p', '--port', help='Server port.', default=DEFAULT_PORT)
+
 subparsers = parser.add_subparsers(dest='command', help='commands')
 
 ls = subparsers.add_parser('ls', help='List tasks.')
@@ -32,6 +34,8 @@ rename = subparsers.add_parser('clear', help='Clear multiple tasks.')
 rename.add_argument('tasks')
 
 args = parser.parse_args()
+url = args.url
+port = args.port
 
 def __get_request(url, data=None):
     try:
