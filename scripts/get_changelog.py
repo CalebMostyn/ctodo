@@ -18,4 +18,4 @@ parser.add_argument("version", help="Version as used in CHANGELOG, ex. 'v1.0.0'.
 args = parser.parse_args()
 
 md = MarkdownExtractor(read_file(args.file_path))
-print(get_content_by_version(md["Changelog"], args.version))
+print(f"# Changelog\n{get_content_by_version(md["Changelog"], args.version)}")
