@@ -61,8 +61,7 @@ jobs:
             -w /workspace
             -e GITHUB_REF=${GITHUB_REF}
           run: |
-            VERSION="${GITHUB_REF#refs/tags/}"
-            python3 scripts/get_changelog.py CHANGELOG.md $VERSION > release_notes.txt
+            python3 scripts/get_changelog.py CHANGELOG.md $GITHUB_REF > release_notes.txt
       
             echo "notes<<EOF" >> /github/output
             cat release_notes.txt >> /github/output
