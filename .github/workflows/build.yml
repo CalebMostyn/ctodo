@@ -59,7 +59,7 @@ jobs:
             -v ${{ github.workspace }}:/workspace
             -v ${{ github.output }}:/github/output
             -w /workspace
-            -e GITHUB_REF=${GITHUB_REF}
+            -e GITHUB_REF=${{ github.ref }}
           run: |
             python3 scripts/get_changelog.py CHANGELOG.md $GITHUB_REF > release_notes.txt
       
