@@ -1,0 +1,23 @@
+[Unit]
+Description=ctodo
+# wait for networking
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ctodo-server
+# automagically makes /var/lib/ctodo
+StateDirectory=ctodo
+Restart=always
+RestartSec=3
+
+# run as my user
+User=caleb
+Group=caleb
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

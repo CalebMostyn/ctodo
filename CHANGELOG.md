@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Added Basic systemd Support
 
 ## [v1.1.0] - 03.28.2026
 - Added CHANGELOG and Automated Release Notes on CI
