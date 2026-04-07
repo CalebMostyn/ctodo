@@ -7,7 +7,7 @@
 #include "json.hpp"
 #include "file_utils.h"
 
-using std::stringstream, std::endl, std::string, std::cout;
+using std::stringstream, std::endl, std::string;
 using json = nlohmann::json;
 
 void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {

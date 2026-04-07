@@ -1,4 +1,3 @@
-#include <iostream>
 #include "task.h"
 
 Task::Task(string title) {

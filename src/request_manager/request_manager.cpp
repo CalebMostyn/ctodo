@@ -1,6 +1,4 @@
-#include <iostream>
 #include "request_manager.h"
-#include "ansi.h"
 
 
 RequestManager::RequestManager(shared_ptr<TaskManager> tm) {

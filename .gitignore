@@ -5,3 +5,4 @@ tasks.txt
 *__pycache__/
 *.o
 *.spec
+compile_commands.json

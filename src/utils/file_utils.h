@@ -1,7 +1,6 @@
 #ifndef _FILE_UTILS__H_
 #define _FILE_UTILS__H_
 
-#include <string>
 #include "task_manager.h"
 
 #define TASKS_HEADER "[TASKS]"

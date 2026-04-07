@@ -1,11 +1,6 @@
-#include <iostream>
-#include <sstream>
-#include <string>
 #include "task_manager.h"
 #include "file_utils.h"
-#include "ansi.h"
 
-using std::string, std::stringstream, std::endl;
 using json = nlohmann::json;
 
 TaskManager::TaskManager(string file_path) {
