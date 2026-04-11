@@ -55,3 +55,60 @@ void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
 
 }
 
+void FileUtils::ParseConfigFile(string file_path, json &config_data) {
+    std::ifstream ifs(file_path);
+    if (!ifs.is_open()) {
+        std::cerr << "Config file does not exist, falling back to server defaults." << endl;
+        return;
+    }
+
+    try {
+        config_data = json::parse(ifs);
+    } catch (...) {
+        std::cerr << "Invalid config file, falling back to server defaults." << endl;
+    }
+    return;
+}
+
+string FileUtils::GetDefaultTasksFile(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["tasks-file"].is_null()) {
+                    return (string)config_data["server"]["tasks-file"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for tasks file in config, falling back to server default." << endl;
+    }
+    return DEFAULT_TASK_FILE;
+}
+string FileUtils::GetDefaultInterface(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["interface"].is_null()) {
+                    return (string)config_data["server"]["interface"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for interface in config, falling back to server default." << endl;
+    }
+    return DEFAULT_INTERFACE;
+}
+int FileUtils::GetDefaultPort(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["port"].is_null()) {
+                    return (int)config_data["server"]["port"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for port in config, falling back to server default." << endl;
+    }
+    return DEFAULT_PORT;
+}

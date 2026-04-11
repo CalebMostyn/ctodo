@@ -6,6 +6,7 @@
 
 #include "task_manager.h"
 #include "request_manager.h"
+#include "file_utils.h"
 
 using std::cout, std::cerr, std::endl, std::string, std::shared_ptr, std::vector, std::atomic, std::map;
 using namespace httplib;
@@ -16,10 +17,6 @@ const map<string, string> ARGUMENTS_HELP = {{"-f", "Tasks file to use. Created i
                                         {"-p", "Port to bind server to. Defaults to 8080."}};
 
 #define ALL_ARGUMENTS_HELP "[-f TASKS_FILE] [-i INTERFACE_ADDR] [-p PORT]"
-#define DEFAULT_FILE "/var/lib/ctodo/tasks.json"
-#define DEFAULT_INTERFACE "0.0.0.0"
-#define DEFAULT_PORT 8080
-
 
 atomic<bool> stop_flag = false;
 void signal_handler(int signum) {
@@ -28,9 +25,12 @@ void signal_handler(int signum) {
 }
 
 int main(int argv, char* argc[] ) {
-    string tasks_file = DEFAULT_FILE;
-    string interface = DEFAULT_INTERFACE;
-    int port = DEFAULT_PORT;
+    json config;
+    FileUtils::ParseConfigFile(DEFAULT_CONFIG_FILE, config);
+    string tasks_file = FileUtils::GetDefaultTasksFile(config);
+    string interface = FileUtils::GetDefaultInterface(config);
+    int port = FileUtils::GetDefaultPort(config);
+
     if (argv > 1) {
         if ((string)argc[1] == "-h") {
             if (argv == 2) {
