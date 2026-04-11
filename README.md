@@ -6,6 +6,9 @@ Simple C++ backend REST HTTP server, built using [cpp-httplib](https://github.co
 
 Operates on a single file, with a list of tasks that are either completed or uncompleted. Future feature may include the server managing multiple files to have seperate, concurrent lists.
 
+# Configuration
+Settings for the server and client can be configured via a JSON file at `~/.config/ctodo/ctodo.conf`. Valid settings for this file can be found in the default config file in `package/home/.config/ctodo.conf`.
+
 # Build
 Includes dependent libs as git submodules, so pull with `--recurse-submodules`.
 
