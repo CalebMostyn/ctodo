@@ -1,5 +1,6 @@
 CXX = g++
-CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto MAKEFLAGS += --no-print-directory -j$(nproc)
+CXXFLAGS = -O2 -Wall -std=c++23 -pipe -MMD -MP -flto
+MAKEFLAGS += --no-print-directory -j$(nproc)
 
 SRC_DIR = src
 SRC_DIRS = . task task_manager request_manager utils
