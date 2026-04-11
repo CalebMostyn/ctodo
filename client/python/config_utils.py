@@ -11,14 +11,11 @@ def load_config(file_path=DEFAULT_CONFIG_FILE):
             data = json.load(file)
         return data
     except FileNotFoundError:
-        if file_path == DEFAULT_CONFIG_FILE:
-            print('Default config file could not be loaded, falling back to client defaults.')
-        else:
-            print(f'{file_path} does not exist, falling back to client defaults.')
+        print('Config file does not exist, falling back to client defaults.')
     except json.decoder.JSONDecodeError:
-        print('Invalid config file, falling back to defaults.')
+        print('Invalid config file, falling back to client defaults.')
     except Exception as e:
-        print('Unexpected error with config file, falling back to defaults.')
+        print('Unexpected error with config file, falling back to client defaults.')
     return None
 
 def get_default_url(config):
