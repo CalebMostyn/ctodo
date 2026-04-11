@@ -1,8 +1,12 @@
+#!/usr/bin/env python
+
 import argparse
 from requests_utils import *
+from config_utils import *
 
-DEFAULT_URL = 'http://localhost'
-DEFAULT_PORT = 8080
+CONFIG = load_config()
+DEFAULT_URL = get_default_url(CONFIG)
+DEFAULT_PORT = get_default_port(CONFIG)
 
 # Parsing Args
 parser = argparse.ArgumentParser(prog='ctodo')

@@ -33,8 +33,8 @@ all: $(OUT_DIR)/$(TARGET)-server client
 
 # must be ran from within virtual env or with requirements installed globally
 client:
-	pyinstaller client/python/client.py -F --distpath $(OUT_DIR) -n $(TARGET)
-	staticx $(OUT_DIR)/$(TARGET) $(OUT_DIR)/$(TARGET)
+	pyinstaller client/python/client.py --distpath $(OUT_DIR) -n $(TARGET)-client
+	cd $(OUT_DIR)/ && ln -s $(TARGET)-client/$(TARGET)-client $(TARGET)
 
 clean:
 	rm -rf $(OUT_DIR)
