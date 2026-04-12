@@ -18,7 +18,7 @@ prepare() {
     git submodule update --init --recursive
     python -m venv venv
     source venv/bin/activate
-    pip install pyinstaller
+    pip install -r client/python/requirements.txt
 }
 
 build() {
