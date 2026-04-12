@@ -15,6 +15,7 @@ source=("git+https://github.com/CalebMostyn/ctodo.git")
 
 prepare() {
     cd "$srcdir/ctodo"
+    git checkout "v$pkgver"
     git submodule update --init --recursive
     python -m venv venv
     source venv/bin/activate
