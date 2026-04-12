@@ -7,7 +7,7 @@ Simple C++ backend REST HTTP server, built using [cpp-httplib](https://github.co
 Operates on a single file, with a list of tasks that are either completed or uncompleted. Future feature may include the server managing multiple files to have seperate, concurrent lists.
 
 # Configuration
-Settings for the server and client can be configured via a JSON file at `~/.config/ctodo/ctodo.conf`. Valid settings for this file can be found in the default config file in `package/home/.config/ctodo.conf`.
+Settings for the server and client can be configured via a JSON file at `~/.config/ctodo/ctodo.conf`. Valid settings for this file can be found in the default config file in `package/usr/share/ctodo/default.conf`. Running `ctodo init` will copy the default configuration file to the correct place if you have `ctodo` installed.
 
 # Build
 Includes dependent libs as git submodules, so pull with `--recurse-submodules`.
@@ -29,3 +29,6 @@ make client
 source venv/bin/activate
 python3 client/python/client.py -h
 ```
+
+# Install
+Local build materials can be installed with `sudo make install` and removed with a `sudo make uninstall`. Moving downloaded releases into `output/`, you can also use make to install prebuilt binaries.
