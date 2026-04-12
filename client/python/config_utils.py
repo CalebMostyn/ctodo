@@ -1,11 +1,12 @@
 import os
 import json
 
-DEFAULT_CONFIG_FILE = os.path.expanduser("~/.config/ctodo/ctodo.conf")
+DEFAULT_CONFIG_FILE = "/usr/share/ctodo/default.conf"
+DEFAULT_USER_CONFIG_FILE = os.path.expanduser("~/.config/ctodo/ctodo.conf")
 CLIENT_DEFAULT_URL = 'http://localhost'
 CLIENT_DEFAULT_PORT = 8080
 
-def load_config(file_path=DEFAULT_CONFIG_FILE):
+def load_config(file_path=DEFAULT_USER_CONFIG_FILE):
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)

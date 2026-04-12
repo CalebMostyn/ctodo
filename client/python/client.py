@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 
 import argparse
+from pathlib import Path
+import shutil
+import sys
+
 from requests_utils import *
 from config_utils import *
+
+
+if sys.argv[1] == 'init':
+    source = Path(DEFAULT_CONFIG_FILE)
+    destination = Path(DEFAULT_USER_CONFIG_FILE)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(source, destination)
+    sys.exit(0)
 
 CONFIG = load_config()
 DEFAULT_URL = get_default_url(CONFIG)
@@ -35,6 +47,8 @@ rename.add_argument('title', nargs='+')
 
 rename = subparsers.add_parser('clear', help='Clear multiple tasks.')
 rename.add_argument('tasks')
+
+init = subparsers.add_parser('init', help='Initialize ctodo configuration file at ~/.config/ctodo/ctodo.conf.')
 
 args = parser.parse_args()
 url = args.url

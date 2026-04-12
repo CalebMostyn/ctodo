@@ -32,3 +32,7 @@ package() {
   cd "$srcdir/ctodo"
   make DESTDIR="$pkgdir" PREFIX=/usr install
 }
+
+post_install() {
+  echo "Run 'ctodo init' to create default config : ~/.config/ctodo/ctodo.conf"
+}
