@@ -9,7 +9,7 @@ from requests_utils import *
 from config_utils import *
 
 
-if sys.argv[1] == 'init':
+if len(sys.argv) > 1 and sys.argv[1] == 'init':
     source = Path(DEFAULT_CONFIG_FILE)
     destination = Path(DEFAULT_USER_CONFIG_FILE)
     destination.parent.mkdir(parents=True, exist_ok=True)
