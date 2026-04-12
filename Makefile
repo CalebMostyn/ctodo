@@ -18,6 +18,8 @@ BUILD_DIR = build
 DESTDIR =
 PREFIX = /usr
 
+USER := $(if $(SUDO_USER),$(SUDO_USER),$(USER))
+
 SRCS := $(foreach d,$(SRC_DIRS),$(wildcard $(SRC_DIR)/$(d)/*.cpp))
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 DEPS := $(OBJS:.o=.d)
@@ -48,8 +50,8 @@ install:
 	install -Dm644 package/usr/share/$(TARGET)/default.conf $(DESTDIR)$(PREFIX)/share/$(TARGET)/default.conf
 
 	install -Dm644 package/etc/systemd/system/$(TARGET).service $(DESTDIR)/etc/systemd/system/$(TARGET).service
-	sed -i 's/User=/User=${SUDO_USER}/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
-	sed -i 's/Group=/Group=${SUDO_USER}/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
+	sed -i 's/User=/User=$(USER)/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
+	sed -i 's/Group=/Group=$(USER)/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
 
 uninstall:
 	rm -rf $(DESTDIR)$(PREFIX)/bin/$(TARGET)*
