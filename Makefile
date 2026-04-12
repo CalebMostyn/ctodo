@@ -15,11 +15,14 @@ TARGET = ctodo
 OUT_DIR = output
 BUILD_DIR = build
 
+DESTDIR =
+PREFIX = /usr
+
 SRCS := $(foreach d,$(SRC_DIRS),$(wildcard $(SRC_DIR)/$(d)/*.cpp))
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 DEPS := $(OBJS:.o=.d)
 
-.PHONY: all client clean
+.PHONY: all client install clean
 
 $(OUT_DIR)/$(TARGET)-server: $(OBJS)
 	@mkdir -p $(OUT_DIR)
@@ -33,8 +36,18 @@ all: $(OUT_DIR)/$(TARGET)-server client
 
 # must be ran from within virtual env or with requirements installed globally
 client:
-	pyinstaller client/python/client.py --distpath $(OUT_DIR) -n $(TARGET)-client
-	cd $(OUT_DIR)/ && ln -s $(TARGET)-client/$(TARGET)-client $(TARGET)
+	pyinstaller client/python/client.py --distpath $(OUT_DIR) -n $(TARGET)
+
+install:
+	install -Dm755 $(OUT_DIR)/$(TARGET)-server $(DESTDIR)$(PREFIX)/bin/$(TARGET)-server
+	install -Dm755 package/$(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+
+	install -d $(DESTDIR)$(PREFIX)/opt/$(TARGET)
+	cp -r $(OUT_DIR)/$(TARGET)/* $(DESTDIR)$(PREFIX)/opt/$(TARGET)
+
+uninstall:
+	rm -rf $(DESTDIR)$(PREFIX)/bin/$(TARGET)*
+	rm -rf $(DESTDIR)$(PREFIX)/opt/$(TARGET)*
 
 clean:
 	rm -rf $(OUT_DIR)
