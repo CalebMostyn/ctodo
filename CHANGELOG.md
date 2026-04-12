@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [v1.1.1] - 04.11.2026
 - Added Basic systemd Support
 - Cleaned up Python Client Build for Faster Execution
 - Added Configuration File and Parsing (#4)
