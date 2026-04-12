@@ -22,7 +22,7 @@ SRCS := $(foreach d,$(SRC_DIRS),$(wildcard $(SRC_DIR)/$(d)/*.cpp))
 OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 DEPS := $(OBJS:.o=.d)
 
-.PHONY: all client install clean
+.PHONY: all client install uninstall clean
 
 $(OUT_DIR)/$(TARGET)-server: $(OBJS)
 	@mkdir -p $(OUT_DIR)
@@ -40,14 +40,19 @@ client:
 
 install:
 	install -Dm755 $(OUT_DIR)/$(TARGET)-server $(DESTDIR)$(PREFIX)/bin/$(TARGET)-server
-	install -Dm755 package/$(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+	install -Dm755 package/usr/bin/$(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
 
 	install -d $(DESTDIR)$(PREFIX)/opt/$(TARGET)
 	cp -r $(OUT_DIR)/$(TARGET)/* $(DESTDIR)$(PREFIX)/opt/$(TARGET)
 
+	install -Dm644 package/etc/systemd/system/$(TARGET).service $(DESTDIR)/etc/systemd/system/$(TARGET).service
+	install -Dm644 package/usr/share/$(TARGET)/default.conf $(DESTDIR)$(PREFIX)/share/$(TARGET)/default.conf
+
 uninstall:
 	rm -rf $(DESTDIR)$(PREFIX)/bin/$(TARGET)*
 	rm -rf $(DESTDIR)$(PREFIX)/opt/$(TARGET)*
+	rm -rf $(DESTDIR)$(PREFIX)/share/$(TARGET)*
+	rm -rf $(DESTDIR)/etc/systemd/system/$(TARGET)*
 
 clean:
 	rm -rf $(OUT_DIR)
