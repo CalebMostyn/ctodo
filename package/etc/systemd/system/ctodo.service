@@ -11,9 +11,9 @@ StateDirectory=ctodo
 Restart=always
 RestartSec=3
 
-# run as my user
-User=caleb
-Group=caleb
+# run as installed user/group
+User=
+Group=
 
 # Logging
 StandardOutput=journal

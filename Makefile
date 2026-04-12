@@ -45,8 +45,11 @@ install:
 	install -d $(DESTDIR)$(PREFIX)/opt/$(TARGET)
 	cp -r $(OUT_DIR)/$(TARGET)/* $(DESTDIR)$(PREFIX)/opt/$(TARGET)
 
-	install -Dm644 package/etc/systemd/system/$(TARGET).service $(DESTDIR)/etc/systemd/system/$(TARGET).service
 	install -Dm644 package/usr/share/$(TARGET)/default.conf $(DESTDIR)$(PREFIX)/share/$(TARGET)/default.conf
+
+	install -Dm644 package/etc/systemd/system/$(TARGET).service $(DESTDIR)/etc/systemd/system/$(TARGET).service
+	sed -i 's/User=/User=${SUDO_USER}/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
+	sed -i 's/Group=/Group=${SUDO_USER}/g' $(DESTDIR)/etc/systemd/system/$(TARGET).service
 
 uninstall:
 	rm -rf $(DESTDIR)$(PREFIX)/bin/$(TARGET)*
