@@ -97,6 +97,7 @@ int main(int argv, char* argc[] ) {
     // Signal catching
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
+    std::signal(SIGHUP, signal_handler);
 
     std::thread server_thread;
     try {
