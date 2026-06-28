@@ -17,7 +17,7 @@
 class FileUtils {
 public:
     static void ParseTasksFile(string file_path, TaskManager &tm);
-    static void WriteTasksFile(string file_path, const TaskManager &tm);
+    static void WriteTasksFile(string file_path, TaskManager &tm);
     static void ParseConfigFile(string file_path, json &config_data);
     static string GetDefaultTasksFile(const json &config_data);
     static string GetDefaultInterface(const json &config_data);

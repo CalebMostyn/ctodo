@@ -5,6 +5,7 @@
 #include "httplib.h"
 
 #include "task_manager.h"
+#include "save_manager.h"
 #include "request_manager.h"
 #include "file_utils.h"
 #include "settings.h"
@@ -82,6 +83,12 @@ int main(int argv, char* argc[] ) {
         // failed to initialize
         cerr << e.what();
         return 1;
+    }
+
+    // only setup periodic saving if save period is greater than 0 seconds (float)
+    if (settings->m_save_period >= 1e-9) {
+        // Setup SaveManager
+        shared_ptr<SaveManager> sm = std::make_shared<SaveManager>(tm);
     }
 
     // Setup RequestManager

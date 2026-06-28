@@ -34,7 +34,7 @@ void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
     }
 }
 
-void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
+void FileUtils::WriteTasksFile(string file_path, TaskManager &tm) {
     string directory = file_path.substr(0, file_path.find_last_of('/'));
     if (directory != file_path && directory != "" && !std::filesystem::exists(directory)) {
         if (!std::filesystem::create_directory(directory)) {

@@ -7,7 +7,7 @@ TaskManager::TaskManager(string file_path) {
     m_file_path = file_path;
     FileUtils::ParseTasksFile(m_file_path, *this);
 }
-void TaskManager::Save() const {
+void TaskManager::Save() {
     FileUtils::WriteTasksFile(m_file_path, *this);
 }
 
@@ -36,15 +36,18 @@ bool TaskManager::DeleteAllCompletedTasks() {
     }
 }
 
-vector<Task> TaskManager::GetTasks() const {
+vector<Task> TaskManager::GetTasks() {
+    std::unique_lock lock(m_tasks_mutex);
     return m_tasks;
 }
 
 void TaskManager::AddTask(const Task &task) {
+    std::unique_lock lock(m_tasks_mutex);
     m_tasks.push_back(task);
 }
 
 bool TaskManager::DeleteTask(const uint &idx, const bool& all, const bool& done) {
+    std::unique_lock lock(m_tasks_mutex);
     if (all) {
         m_tasks.clear();
         return true;
@@ -60,6 +63,7 @@ bool TaskManager::DeleteTask(const uint &idx, const bool& all, const bool& done)
     return false;
 }
 bool TaskManager::UpdateTask(const uint& idx, const string& title, const bool& status) {
+    std::unique_lock lock(m_tasks_mutex);
     if (ValidTaskIdx(idx)) {
         Task* t = &m_tasks[idx];
         t->SetTitle(title);
@@ -70,6 +74,7 @@ bool TaskManager::UpdateTask(const uint& idx, const string& title, const bool& s
 }
 
 bool TaskManager::UpdateTask(const uint& idx, const bool& status) {
+    std::unique_lock lock(m_tasks_mutex);
     if (ValidTaskIdx(idx)) {
         Task* t = &m_tasks[idx];
         t->SetIsCompleted(status);
@@ -79,6 +84,7 @@ bool TaskManager::UpdateTask(const uint& idx, const bool& status) {
 }
 
 bool TaskManager::UpdateTask(const uint& idx, const string& title) {
+    std::unique_lock lock(m_tasks_mutex);
     if (ValidTaskIdx(idx)) {
         Task* t = &m_tasks[idx];
         t->SetTitle(title);
@@ -87,7 +93,8 @@ bool TaskManager::UpdateTask(const uint& idx, const string& title) {
     return false;
 }
 
-json TaskManager::TasksToJson() const {
+json TaskManager::TasksToJson() {
+    std::unique_lock lock(m_tasks_mutex);
     json data = json::object();
     data["tasks"] = json::array();
     for (Task t : m_tasks) {
