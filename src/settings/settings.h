@@ -14,6 +14,7 @@ public:
     string m_tasks_file;
     string m_interface;
     int m_port;
+    float m_save_period;
     bool m_save_on_request;
 };
 

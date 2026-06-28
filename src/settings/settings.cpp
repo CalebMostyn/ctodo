@@ -11,6 +11,7 @@ Settings::Settings() {
     m_tasks_file = FileUtils::GetDefaultTasksFile(config);
     m_interface = FileUtils::GetDefaultInterface(config);
     m_port = FileUtils::GetDefaultPort(config);
+    m_save_period = FileUtils::GetSavePeriod(config);
     m_save_on_request = FileUtils::GetSaveOnRequest(config);
 }
 

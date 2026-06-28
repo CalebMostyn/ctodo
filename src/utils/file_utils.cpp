@@ -113,6 +113,21 @@ int FileUtils::GetDefaultPort(const json &config_data) {
     return DEFAULT_PORT;
 }
 
+float FileUtils::GetSavePeriod(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["save-period"].is_null()) {
+                    return (float)config_data["server"]["save-period"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for save period in config, falling back to server default." << endl;
+    }
+    return DEFAULT_SAVE_PERIOD;
+}
+
 bool FileUtils::GetSaveOnRequest(const json &config_data) {
     try {
         if (!config_data.is_null()) {
