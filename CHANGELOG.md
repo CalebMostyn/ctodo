@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [v1.1.2] - 06.27.2026
 - Fixed Bug with Port Type in Default Configuration File
 - Added Periodic Saving, Save on Request, and a Manual Save Endpoint (#13)
 
