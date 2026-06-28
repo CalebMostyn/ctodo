@@ -21,6 +21,7 @@ public:
     void SetupServer(Server& svr);
 
     // Requests
+    void SaveTasks(const Request& req, Response& res);
     void GetTasks(const Request& req, Response& res);
     void AddTask(const Request& req, Response& res);
     void DeleteTask(const Request& req, Response& res);

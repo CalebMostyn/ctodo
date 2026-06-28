@@ -7,6 +7,7 @@ RequestManager::RequestManager(shared_ptr<TaskManager> tm) {
 }
 
 void RequestManager::SetupServer(Server& svr) {
+    // Tasks
     svr.Get("/tasks", [this](const Request& req, Response& res) {
         GetTasks(req, res);
     });
@@ -19,14 +20,26 @@ void RequestManager::SetupServer(Server& svr) {
     svr.Patch("/tasks", [this](const Request& req, Response& res) {
         UpdateTask(req, res);
     });
+    // Save
+    svr.Get("/save", [this](const Request& req, Response& res) {
+        SaveTasks(req, res);
+    });
 
     // runs after each request
-    svr.set_post_routing_handler([&](const Request&, Response& res) {
-        // successful request
+    svr.set_post_routing_handler([&](const Request& req, Response& res) {
+        // if successful request and save on request enabled, do so
         if (Settings::Instance()->m_save_on_request && res.status < 400) {
-            m_task_manager->Save();
+            // don't save twice if the user manually saved
+            if (!req.path.starts_with("/save")) {
+                m_task_manager->Save();
+            }
         }
     });
+}
+void RequestManager::SaveTasks(const Request& req, Response& res) {
+    m_task_manager->Save();
+    json response = {{"message", "Task(s) Saved Successfully."}};
+    res.set_content(response.dump(), "application/json");
 }
 
 void RequestManager::GetTasks(const Request& req, Response& res) {

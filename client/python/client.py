@@ -50,6 +50,8 @@ rename.add_argument('tasks')
 
 init = subparsers.add_parser('init', help='Initialize ctodo configuration file at ~/.config/ctodo/ctodo.conf.')
 
+save = subparsers.add_parser('save', help='Manually save task list to disk.')
+
 args = parser.parse_args()
 url = args.url
 port = args.port
@@ -87,6 +89,9 @@ elif args.command == 'clear':
         tasks = "*"
     data = {'task': tasks}
     response = delete_request(f'{url}:{port}/tasks', data=data)
+    print(response['message'])
+elif args.command == 'save':
+    response = get_request(f'{url}:{port}/save')
     print(response['message'])
 else:
     parser.print_help()
