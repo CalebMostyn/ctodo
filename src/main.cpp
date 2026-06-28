@@ -119,6 +119,8 @@ int main(int argv, char* argc[] ) {
     // stop server and join its thread
     svr.stop();
     server_thread.join();
+    // save tasks to disk
+    tm->Save();
     cout << "Server stopped." << endl;
     
     return 0;

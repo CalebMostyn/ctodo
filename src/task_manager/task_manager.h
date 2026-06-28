@@ -17,7 +17,6 @@ private:
     bool DeleteAllCompletedTasks();
 public:
     TaskManager(string file_path);
-    ~TaskManager();
 
     vector<Task> GetTasks() const;
     void AddTask(const Task& task);
@@ -27,6 +26,7 @@ public:
     bool UpdateTask(const uint& idx, const string& title);
 
     json TasksToJson() const;
+    void Save() const;
 };
 
 #endif //_TASK_MANAGER__H_

@@ -7,8 +7,7 @@ TaskManager::TaskManager(string file_path) {
     m_file_path = file_path;
     FileUtils::ParseTasksFile(m_file_path, *this);
 }
-
-TaskManager::~TaskManager() {
+void TaskManager::Save() const {
     FileUtils::WriteTasksFile(m_file_path, *this);
 }
 
