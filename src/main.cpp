@@ -7,6 +7,7 @@
 #include "task_manager.h"
 #include "request_manager.h"
 #include "file_utils.h"
+#include "settings.h"
 
 using std::cout, std::cerr, std::endl, std::string, std::shared_ptr, std::vector, std::atomic, std::map;
 using namespace httplib;
@@ -25,11 +26,7 @@ void signal_handler(int signum) {
 }
 
 int main(int argv, char* argc[] ) {
-    json config;
-    FileUtils::ParseConfigFile(DEFAULT_CONFIG_FILE, config);
-    string tasks_file = FileUtils::GetDefaultTasksFile(config);
-    string interface = FileUtils::GetDefaultInterface(config);
-    int port = FileUtils::GetDefaultPort(config);
+    Settings* settings = Settings::Instance();
 
     if (argv > 1) {
         if ((string)argc[1] == "-h") {
@@ -48,14 +45,14 @@ int main(int argv, char* argc[] ) {
                     cerr << argc[0] << " : Missing argument TASKS_FILE" << endl;
                     return 1;
                 }
-                tasks_file = argc[ii + 1];
+                settings->m_tasks_file = argc[ii + 1];
                 ii++;
             } else if ((string)argc[ii] == "-i") {
                 if (ii == argv - 1) {
                     cerr << argc[0] << " : Missing argument INTERFACE_ADDR" << endl;
                     return 1;
                 }
-                interface = argc[ii + 1];
+                settings->m_interface = argc[ii + 1];
                 ii++;
             } else if ((string)argc[ii] == "-p") {
                 if (ii == argv - 1) {
@@ -63,7 +60,7 @@ int main(int argv, char* argc[] ) {
                     return 1;
                 }
                 try {
-                    port = std::stoi(argc[ii + 1]);
+                    settings->m_port = std::stoi(argc[ii + 1]);
                 } catch (...) {
                     cerr << argc[0] << " : Invalid argument PORT" << argc[ii + 1] << endl;
                     return 1;
@@ -80,7 +77,7 @@ int main(int argv, char* argc[] ) {
     // Setup TaskManager
     shared_ptr<TaskManager> tm;
     try {
-        tm = std::make_shared<TaskManager>(tasks_file);
+        tm = std::make_shared<TaskManager>(settings->m_tasks_file);
     } catch (const std::exception& e) {
         // failed to initialize
         cerr << e.what();
@@ -103,11 +100,11 @@ int main(int argv, char* argc[] ) {
     try {
         // start http server on seperate thread
         server_thread = std::thread([&]() {
-            cout << "Server listening on " << interface << ":" << port << "..." << endl;
-            svr.listen(interface, port);
+            cout << "Server listening on " << settings->m_interface << ":" << settings->m_port << "..." << endl;
+            svr.listen(settings->m_interface, settings->m_port);
         });
     } catch (...) {
-        cerr << argc[0] << " : Failed to open server on " << interface << ":" << port << endl;
+        cerr << argc[0] << " : Failed to open server on " << settings->m_interface << ":" << settings->m_port << endl;
         return 1;
     }
 
