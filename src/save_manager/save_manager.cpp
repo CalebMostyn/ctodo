@@ -1,7 +1,6 @@
 #include "save_manager.h"
 #include "settings.h"
 
-#include <iostream>
 #include <chrono>
 
 SaveManager::SaveManager(std::shared_ptr<TaskManager> tm) {
@@ -36,7 +35,6 @@ void SaveManager::SaveTasksAsync() {
         // unlock mutex so that file save doesn't halt anything waiting on mutex
         lock.unlock();
         // save to file
-        std::cout << "saving to file!!!!" << std::endl;
         m_task_manager->Save();
         lock.lock();
     }
