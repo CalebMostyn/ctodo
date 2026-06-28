@@ -34,7 +34,7 @@ void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
     }
 }
 
-void FileUtils::WriteTasksFile(string file_path, const TaskManager &tm) {
+void FileUtils::WriteTasksFile(string file_path, TaskManager &tm) {
     string directory = file_path.substr(0, file_path.find_last_of('/'));
     if (directory != file_path && directory != "" && !std::filesystem::exists(directory)) {
         if (!std::filesystem::create_directory(directory)) {
@@ -112,3 +112,34 @@ int FileUtils::GetDefaultPort(const json &config_data) {
     }
     return DEFAULT_PORT;
 }
+
+float FileUtils::GetSavePeriod(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["save-period"].is_null()) {
+                    return (float)config_data["server"]["save-period"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for save period in config, falling back to server default." << endl;
+    }
+    return DEFAULT_SAVE_PERIOD;
+}
+
+bool FileUtils::GetSaveOnRequest(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["save-on-request"].is_null()) {
+                    return (bool)config_data["server"]["save-on-request"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for 'Save on Request' in config, falling back to server default." << endl;
+    }
+    return DEFAULT_SAVE_ON_REQUEST;
+}
+

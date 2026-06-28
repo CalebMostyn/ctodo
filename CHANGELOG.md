@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+- Fixed Bug with Port Type in Default Configuration File
+- Added Periodic Saving, Save on Request, and a Manual Save Endpoint (#13)
 
 ## [v1.1.1] - 04.11.2026
 - Added Basic systemd Support
