@@ -1,4 +1,5 @@
 #include "request_manager.h"
+#include "settings.h"
 
 
 RequestManager::RequestManager(shared_ptr<TaskManager> tm) {
@@ -17,6 +18,14 @@ void RequestManager::SetupServer(Server& svr) {
     });
     svr.Patch("/tasks", [this](const Request& req, Response& res) {
         UpdateTask(req, res);
+    });
+
+    // runs after each request
+    svr.set_post_routing_handler([&](const Request&, Response& res) {
+        // successful request
+        if (Settings::Instance()->m_save_on_request && res.status < 400) {
+            m_task_manager->Save();
+        }
     });
 }
 

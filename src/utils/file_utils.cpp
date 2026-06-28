@@ -112,3 +112,19 @@ int FileUtils::GetDefaultPort(const json &config_data) {
     }
     return DEFAULT_PORT;
 }
+
+bool FileUtils::GetSaveOnRequest(const json &config_data) {
+    try {
+        if (!config_data.is_null()) {
+            if (!config_data["server"].is_null()) {
+                if (!config_data["server"]["save-on-request"].is_null()) {
+                    return (bool)config_data["server"]["save-on-request"];
+                }
+            }
+        }
+    } catch (...) {
+        std::cerr << "Invalid value for 'Save on Request' in config, falling back to server default." << endl;
+    }
+    return DEFAULT_SAVE_ON_REQUEST;
+}
+

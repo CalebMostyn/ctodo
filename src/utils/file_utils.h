@@ -11,6 +11,7 @@
 #define DEFAULT_TASK_FILE "/var/lib/ctodo/tasks.json"
 #define DEFAULT_INTERFACE "0.0.0.0"
 #define DEFAULT_PORT 8080
+#define DEFAULT_SAVE_ON_REQUEST false 
 
 class FileUtils {
 public:
@@ -20,6 +21,8 @@ public:
     static string GetDefaultTasksFile(const json &config_data);
     static string GetDefaultInterface(const json &config_data);
     static int GetDefaultPort(const json &config_data);
+    static int GetSavePeriod(const json &config_data);
+    static bool GetSaveOnRequest(const json &config_data);
 };
 
 #endif //_FILE_UTILS__H_
