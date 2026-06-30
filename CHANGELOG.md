@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Fixed Bug Where Non-existant Task Files Caused a Crash
 
 ## [v1.1.2] - 06.27.2026
 - Fixed Bug with Port Type in Default Configuration File

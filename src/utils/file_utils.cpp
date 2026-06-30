@@ -16,6 +16,9 @@ void FileUtils::ParseTasksFile(string file_path, TaskManager &tm) {
     if (!ifs.is_open()) {
         // Create file if does not exist
         WriteTasksFile(file_path, tm);
+
+        // reopen after creating the file
+        ifs.open(file_path);
     }
 
     json data;
