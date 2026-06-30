@@ -53,6 +53,9 @@ void RequestManager::GetTasks(const Request& req, Response& res) {
 void RequestManager::AddTask(const Request& req, Response& res) {
     string task_title;
     try {
+        if (!req.has_param("title")) {
+            throw std::invalid_argument("No title specified.");
+        }
         task_title = req.get_param_value("title");
     } catch (...) {
         res.status = 400;
