@@ -7,6 +7,10 @@ RequestManager::RequestManager(shared_ptr<TaskManager> tm) {
 }
 
 void RequestManager::SetupServer(Server& svr) {
+    // Default endpoint
+    svr.Get("/", [this](const Request& req, Response& res) {
+        res.set_content("", "text/plain");
+    });
     // Tasks
     svr.Get("/tasks", [this](const Request& req, Response& res) {
         GetTasks(req, res);
