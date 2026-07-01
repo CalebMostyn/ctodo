@@ -30,10 +30,23 @@ class TestDeleteTasks:
         for ii in range(4):
             assert tasks[ii]['title'] == self.format_task_title(ii + 1), f"Unexpected task title: expected {self.format_task_title(ii + 1)}, got {tasks[ii]['title']}"
 
+    # fail on delete with no task index
+    def test_delete_no_task(self, task_file, server):
+        response = requests.delete(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
+        assert response.status_code == 400
+
+        response = requests.get(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
+        tasks = response.json()["tasks"]
+        assert len(tasks) == 4, f"Expected task list with 4 entry, got {len(tasks)}."
+
     # fail on delete with invalid task index
     def test_delete_nonexistent_task(self, task_file, server):
         response = requests.delete(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks", data={"task": 999})
         assert response.status_code == 404
+
+        response = requests.get(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
+        tasks = response.json()["tasks"]
+        assert len(tasks) == 4, f"Expected task list with 4 entry, got {len(tasks)}."
 
     # delete just the tasks marked as done
     def test_clear_done(self, task_file, server):

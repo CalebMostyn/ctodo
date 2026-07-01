@@ -33,7 +33,7 @@ class TestAddTasks:
     # fail to add task with no title
     def test_add_task_no_title(self, task_file, server):
         response = requests.post(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
-        assert response.status_code == 400, f"Adding task with no title was allowed."
+        assert response.status_code == 400
 
         response = requests.get(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
         tasks = response.json()["tasks"]
