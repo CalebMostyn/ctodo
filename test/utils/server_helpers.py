@@ -1,7 +1,9 @@
 import time
 import subprocess
 import psutil
+import getpass
 
+import pytest
 import requests
 
 from utils.constants import *
@@ -24,17 +26,21 @@ def start_server(task_file):
             pass
     return server
 
-# kills local server instances (just if ran out of the output directory)
+# kills server instances owned by this user, if ran by other user
+# such as sudo by systemd, tests will exit, as they may interfere
 def kill_all_server_instances():
-    ps_name = 'output/ctodo-server'
+    ps_name = 'ctodo-server'
     for proc in psutil.process_iter(["pid", "name", "cmdline"]):
         try:
             name = proc.info["name"] or ""
             cmdline = " ".join(proc.info["cmdline"] or [])
 
             if ps_name in name.lower() or ps_name in cmdline.lower():
-                # sigterm for graceful shutdown
-                proc.terminate()
+                if proc.username() != getpass.getuser():
+                    pytest.exit("Non-owned server process running, exiting tests.")
+                else:
+                    # sigterm for graceful shutdown
+                    proc.terminate()
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
 
