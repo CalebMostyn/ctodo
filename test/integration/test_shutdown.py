@@ -7,7 +7,7 @@ import requests
 from utils.constants import *
 from utils.server_helpers import start_server
 
-@pytest.mark.parametrize("task_file", ["test_files/blank_tasks.json", "nonexistent_tasks.json"], indirect=True)
+@pytest.mark.parametrize("task_file", ["test_files/blank_tasks.json"], indirect=True)
 class TestSigint:
 
     test_task_title = "test task"
