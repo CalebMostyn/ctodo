@@ -20,7 +20,7 @@ class TestPerformance:
             response = requests.post(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks", data={"title": self.format_task_title(ii)})
             assert response.status_code == 200
         delta_t = (time.monotonic() - start_ts)
-        assert delta_t < 1, f"1000 post requests took longer than 1 second."
+        assert delta_t < 1, f"1000 post requests took longer than 1 second ({delta_t}s)."
 
         response = requests.get(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
         assert response.status_code == 200
@@ -37,7 +37,7 @@ class TestPerformance:
             response = requests.delete(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks", data={"task": ii})
             assert response.status_code == 200, f"Failed on task index {ii}"
         delta_t = (time.monotonic() - start_ts)
-        assert delta_t < 1, f"1000 delete requests took longer than 1 second."
+        assert delta_t < 1, f"1000 delete requests took longer than 1 second ({delta_t}s)."
 
         response = requests.get(f"{DEFAULT_SERVER_URL}:{DEFAULT_SERVER_PORT}/tasks")
         assert response.status_code == 200
