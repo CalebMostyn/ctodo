@@ -1,5 +1,6 @@
 import time
 import subprocess
+import psutil
 
 import requests
 
@@ -22,3 +23,18 @@ def start_server(task_file):
         except Exception:
             pass
     return server
+
+# kills local server instances (just if ran out of the output directory)
+def kill_all_server_instances():
+    ps_name = 'output/ctodo-server'
+    for proc in psutil.process_iter(["pid", "name", "cmdline"]):
+        try:
+            name = proc.info["name"] or ""
+            cmdline = " ".join(proc.info["cmdline"] or [])
+
+            if ps_name in name.lower() or ps_name in cmdline.lower():
+                # sigterm for graceful shutdown
+                proc.terminate()
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
