@@ -71,3 +71,4 @@ class TestDeleteTasks:
         assert response.status_code == 200
         tasks = response.json()["tasks"]
         assert len(tasks) == 0, f"Expected empty task list, got {len(tasks)}."
+
